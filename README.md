@@ -1,0 +1,2 @@
+# ab-core
+Bukkit plugin
