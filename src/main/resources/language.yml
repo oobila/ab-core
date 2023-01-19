@@ -1,0 +1,17 @@
+################################
+# Core language config file
+# Author: oobila
+################################
+
+
+#message an op receives when the config reloaded automatically
+command-options: 'Incorrect arg used: {0}. Must use one of: {1}'
+
+#message an op receives when a config file is reloaded
+config-reload: 'Config {0} was reloaded for plugin: {1}'
+
+#message a player receives when the command has an enum arg is incorrect
+incorrect-command-args: Command requires {0} arguments
+
+#message a player receives when the command has an arg of the wrong type
+command-type: 'Incorrect arg type used: {0}. Arg must be of type: {1}'

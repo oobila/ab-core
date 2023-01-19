@@ -1,0 +1,23 @@
+main: com.github.oobila.bukkit.CorePlugin
+name: ABCore
+version: '1.9-SNAPSHOT'
+description: This is a library plugin.
+author: oobila
+website: 'https://github.com/oobila/ab-core'
+api-version: 1.16
+softdepend:
+  - Vault
+  - WorldEdit
+  - ABPresent
+  - ABSkyLantern
+  - ABEnderPlots
+commands:
+  ab-reload:
+    description: Reloads the config for all plugins that use ABCore
+    permission: abcore.reload
+    permission-message: You do not have permission to reload the configs!
+    usage: /<command>
+permissions:
+  abcore.reload:
+    description: Used by admins to reload the config of plugins.
+    default: op
