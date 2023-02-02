@@ -8,7 +8,9 @@ import com.github.oobila.bukkit.sidecar.config.ConfigLoader;
 import com.github.oobila.bukkit.sidecar.config.PluginConfig;
 import com.github.oobila.bukkit.sidecar.persistence.DataLoader;
 import com.github.oobila.bukkit.util.Version;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -31,7 +33,7 @@ public class CorePlugin extends JavaPlugin {
     @Getter
     private static Map<String, String> language;
 
-    @Getter
+    @Getter @Setter(AccessLevel.PRIVATE)
     private static CorePlugin instance;
 
     @Getter
@@ -51,10 +53,9 @@ public class CorePlugin extends JavaPlugin {
     }
 
     @Override
-    @SuppressWarnings("java:S2696")
     public void onEnable() {
         super.onEnable();
-        CorePlugin.instance = this;
+        setInstance(this);
         new UpdateChecker(this, SPIGOT_ID);
 
         //#### config ####

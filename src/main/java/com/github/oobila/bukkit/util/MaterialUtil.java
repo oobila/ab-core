@@ -1,6 +1,8 @@
 package com.github.oobila.bukkit.util;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Utility class to help with common functions for Minecraft Materials
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MaterialUtil {
 
     @Getter
@@ -80,9 +83,6 @@ public class MaterialUtil {
             Material.WARPED_SIGN,
             Material.WARPED_WALL_SIGN
     );
-
-    private MaterialUtil() {
-    }
 
     /**
      * Returns a random coloured glass pane

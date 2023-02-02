@@ -1,15 +1,16 @@
 package com.github.oobila.bukkit.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Utility class to help with common random functions
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class RandomUtil {
-
-    private RandomUtil() {
-    }
 
     /**
      * Returns a random item from a Set (or any Collection)

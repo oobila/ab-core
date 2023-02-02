@@ -1,5 +1,7 @@
 package com.github.oobila.bukkit.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -7,10 +9,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 /**
  * Utility class to help with common functions for Minecraft ItemStacks
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemStackUtil {
-
-    private ItemStackUtil() {
-    }
 
     /**
      * Force give an item to a player, if their inventory is full it will drop the item on the ground infront of them.
