@@ -1,9 +1,7 @@
 package com.github.oobila.bukkit.sidecar;
 
-import com.github.oobila.bukkit.util.LoggingUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
@@ -13,7 +11,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AnnotationUtil {
@@ -31,9 +28,7 @@ public class AnnotationUtil {
                 }
         );
         Thread.currentThread().setContextClassLoader(classLoader);
-        return LoggingUtil.runWithLoggingOff(() ->
-                new Reflections(ClasspathHelper.forClassLoader(classLoader), Scanners.FieldsAnnotated)
-        );
+        return new Reflections(ClasspathHelper.forClassLoader(classLoader), Scanners.FieldsAnnotated);
     }
 
 }
