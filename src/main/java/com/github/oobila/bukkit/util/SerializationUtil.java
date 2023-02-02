@@ -1,5 +1,7 @@
 package com.github.oobila.bukkit.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
@@ -7,10 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SerializationUtil {
-
-    private SerializationUtil() {
-    }
 
     public static void writeVector(ObjectOutputStream o, Vector vector) throws IOException {
         if(vector != null) {

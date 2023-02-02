@@ -2,6 +2,8 @@ package com.github.oobila.bukkit.util;
 
 import com.github.oobila.bukkit.Constants;
 import com.github.oobila.bukkit.CorePlugin;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -10,10 +12,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemMetaUtil {
-
-    private ItemMetaUtil() {
-    }
 
     /**
      * Removes an item from the persistent container

@@ -1,5 +1,7 @@
 package com.github.oobila.bukkit.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.util.Vector;
 
 import java.util.HashSet;
@@ -8,13 +10,11 @@ import java.util.Set;
 /**
  * Utility class for common vector calculations
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class VectorMaths {
 
     public static final Vector baseVector = new Vector(1, 0, 0);
     public static final Vector zeroVector = new Vector(0, 0, 0);
-
-    private VectorMaths(){
-    }
 
     /**
      * Calculates the angle between two vectors

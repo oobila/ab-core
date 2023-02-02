@@ -1,17 +1,17 @@
 package com.github.oobila.bukkit.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.bukkit.ChatColor;
 
 /**
  * Utility class to help with Minecraft chat colours
  */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ChatColorUtils {
 
     private static final String AMPERSAND = "&";
     private static final String EMPTY_STRING = "";
-
-    private ChatColorUtils() {
-    }
 
     /**
      * Function that replaces ChatColor codes with the ChatColor in a String. i.e. "&a" becomes ChatColor.GREEN
