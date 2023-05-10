@@ -3,13 +3,20 @@ package com.github.oobila.bukkit.util;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utility class to help with common functions for Minecraft Materials
@@ -17,53 +24,115 @@ import java.util.concurrent.ThreadLocalRandom;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MaterialUtil {
 
-    @Getter
-    private static final List<Material> COLORED_GLASS_PANES = Arrays.asList(
-            Material.RED_STAINED_GLASS_PANE,
-            Material.LIGHT_BLUE_STAINED_GLASS_PANE,
-            Material.YELLOW_STAINED_GLASS_PANE,
-            Material.LIME_STAINED_GLASS_PANE,
-            Material.ORANGE_STAINED_GLASS_PANE,
-            Material.BLUE_STAINED_GLASS_PANE,
-            Material.MAGENTA_STAINED_GLASS_PANE,
-            Material.GREEN_STAINED_GLASS_PANE,
-            Material.BROWN_STAINED_GLASS_PANE,
-            Material.PINK_STAINED_GLASS_PANE,
-            Material.PURPLE_STAINED_GLASS_PANE,
-            Material.CYAN_STAINED_GLASS_PANE
-    );
+    // #### GENERIC ####
 
-    @Getter
-    private static final List<Material> COLORED_TERRACOTTA = Arrays.asList(
-            Material.RED_TERRACOTTA,
-            Material.LIGHT_BLUE_TERRACOTTA,
-            Material.YELLOW_TERRACOTTA,
-            Material.LIME_TERRACOTTA,
-            Material.ORANGE_TERRACOTTA,
-            Material.BLUE_TERRACOTTA,
-            Material.MAGENTA_TERRACOTTA,
-            Material.GREEN_TERRACOTTA,
-            Material.BROWN_TERRACOTTA,
-            Material.PINK_TERRACOTTA,
-            Material.PURPLE_TERRACOTTA,
-            Material.CYAN_TERRACOTTA
-    );
+    public static List<Material> getMaterialList(Collection<String> strings) {
+        return strings.stream().map(Material::getMaterial).toList();
+    }
 
-    @Getter
-    private static final List<Material> COLORED_CONCRETE = Arrays.asList(
-            Material.RED_CONCRETE,
-            Material.LIGHT_BLUE_CONCRETE,
-            Material.YELLOW_CONCRETE,
-            Material.LIME_CONCRETE,
-            Material.ORANGE_CONCRETE,
-            Material.BLUE_CONCRETE,
-            Material.MAGENTA_CONCRETE,
-            Material.GREEN_CONCRETE,
-            Material.BROWN_CONCRETE,
-            Material.PINK_CONCRETE,
-            Material.PURPLE_CONCRETE,
-            Material.CYAN_CONCRETE
-    );
+    // #### COLORED MATERIALS ####
+
+    private static final int NUM_OF_COLORS = 16;
+    private static final Map<ColoredMaterialMeta, Material> coloredMaterials = new HashMap<>();
+    private static final Map<ColoredMaterialType, List<Material>> coloredMaterialLists = new HashMap<>();
+    static {
+        for(ColoredMaterialType coloredMaterialType : ColoredMaterialType.values()) {
+            for (BlockColor blockColor : BlockColor.values()) {
+                Material material = Material.getMaterial(blockColor.name() + "_" + coloredMaterialType.name());
+                coloredMaterials.put(new ColoredMaterialMeta(blockColor, coloredMaterialType), material);
+                coloredMaterialLists.computeIfAbsent(coloredMaterialType, (k) -> new ArrayList<>());
+                coloredMaterialLists.get(coloredMaterialType).add(material);
+            }
+        }
+    }
+
+    /**
+     * Returns a random coloured block
+     * @param type
+     * @return
+     */
+    public static Material randomColoredBlock(ColoredMaterialType type){
+        return coloredMaterialLists.get(type).get(ThreadLocalRandom.current().nextInt(NUM_OF_COLORS));
+    }
+
+    /**
+     * Returns a set of random colored materials.
+     * @param type
+     * @param size
+     * @return
+     */
+    @SuppressWarnings("java:S5413")
+    public static Material[] randomColoredBlockArray(ColoredMaterialType type, int size){
+        return (Material[]) Stream.generate(() -> {
+            return randomColoredBlock(type);
+        }).limit(size).toArray();
+    }
+
+    public static Material getColoredMaterial(BlockColor blockColor, ColoredMaterialType type){
+        return coloredMaterials.get(new ColoredMaterialMeta(blockColor, type));
+    }
+
+    public static Material getColoredMaterial(ChatColor chatColor, ColoredMaterialType type){
+        return coloredMaterials.get(new ColoredMaterialMeta(BlockColor.get(chatColor), type));
+    }
+
+    public enum ColoredMaterialType {
+        WOOL,
+        CARPET,
+        TERRACOTTA,
+        CONCRETE,
+        CONCRETE_POWDER,
+        GLAZED_TERRACOTTA,
+        STAINED_GLASS,
+        STAINED_GLASS_PANE,
+        SHULKER_BOX,
+        BED,
+        CANDLE,
+        BANNER
+    }
+
+    public enum BlockColor {
+        WHITE(ChatColor.WHITE),
+        LIGHT_GRAY(ChatColor.GRAY),
+        GRAY(ChatColor.DARK_GRAY),
+        BLACK(ChatColor.BLACK),
+        BROWN(null),
+        RED(ChatColor.RED),
+        ORANGE(ChatColor.GOLD),
+        YELLOW(ChatColor.YELLOW),
+        LIME(ChatColor.GREEN),
+        GREEN(ChatColor.DARK_GREEN),
+        CYAN(ChatColor.DARK_AQUA),
+        LIGHT_BLUE(ChatColor.AQUA),
+        BLUE(ChatColor.BLUE),
+        PURPLE(ChatColor.DARK_PURPLE),
+        MAGENTA(null),
+        PINK(ChatColor.LIGHT_PURPLE);
+
+        private static final Map<ChatColor, BlockColor> chatColorBlockColorMap;
+        static {
+            chatColorBlockColorMap = Arrays.stream(BlockColor.values())
+                    .filter(blockColor -> blockColor.chatColor != null)
+                    .collect(Collectors.toMap(
+                            (blockColor) -> blockColor.getChatColor(),
+                            (blockColor) -> blockColor
+                    )
+            );
+        }
+
+        @Getter
+        private ChatColor chatColor;
+
+        BlockColor(ChatColor chatColor) {
+            this.chatColor = chatColor;
+        }
+
+        public static BlockColor get(ChatColor chatColor) {
+            return chatColorBlockColorMap.get(chatColor);
+        }
+    }
+
+    // #### SIGNS ####
 
     private static final List<Material> SIGN_MATERIALS = Arrays.asList(
             Material.ACACIA_SIGN,
@@ -84,39 +153,7 @@ public class MaterialUtil {
             Material.WARPED_WALL_SIGN
     );
 
-    /**
-     * Returns a random coloured glass pane
-     * @return
-     */
-    public static Material randomColoredGlassPane(){
-        return COLORED_GLASS_PANES.get(ThreadLocalRandom.current().nextInt(COLORED_GLASS_PANES.size()));
-    }
-
-    /**
-     * Returns a set of random glass panes. No duplicates are used until the size is larger than the number of colours
-     * where the pool is refreshed.
-     * @param size
-     * @return
-     */
-    @SuppressWarnings("java:S5413")
-    public static Material[] randomColoredGlassPanes(int size){
-        Material[] materials = new Material[size];
-        List<Material> fetchList = new ArrayList<>(COLORED_GLASS_PANES);
-        for(int i = 0; i < size; i++){
-            if(fetchList.isEmpty()){
-                fetchList = new ArrayList<>(COLORED_GLASS_PANES);
-            }
-            int randomIndex = ThreadLocalRandom.current().nextInt(fetchList.size());
-            materials[i] = fetchList.remove(randomIndex);
-        }
-        return materials;
-    }
-
     public static boolean isSign(Material type) {
         return SIGN_MATERIALS.contains(type);
-    }
-
-    public static List<Material> getMaterialList(Collection<String> strings) {
-        return strings.stream().map(Material::getMaterial).toList();
     }
 }

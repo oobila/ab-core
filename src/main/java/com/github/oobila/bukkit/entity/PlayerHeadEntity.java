@@ -13,7 +13,7 @@ public class PlayerHeadEntity extends NodeEntity<ArmorStand> implements ArmorSta
     private ArmorStand armorStand;
 
     public PlayerHeadEntity(Location location, ItemStack nonPlayerSkull,
-                            CustomEntityBehaviour<NodeEntity<ArmorStand>> behaviour) {
+                            CustomEntityBehaviour behaviour) {
         super((ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND), behaviour);
         this.armorStand = getEntity();
         getEquipment().setHelmet(nonPlayerSkull);

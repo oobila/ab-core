@@ -1,4 +1,4 @@
-package com.github.oobila.bukkit.gui.objects;
+package com.github.oobila.bukkit.gui.cells;
 
 import com.github.oobila.bukkit.itemstack.CustomItemStack;
 import com.github.oobila.bukkit.itemstack.CustomItemStackBuilder;
@@ -73,7 +73,7 @@ public class ButtonCellBuilder {
             customItemStack.setItemMeta(itemMeta);
         }
         ButtonCell buttonCell = new ButtonCell(customItemStack, buttonClickAction != null ?
-                buttonClickAction : (e, player, button, guiMenu) -> {});
+                buttonClickAction : (e, player, button, gui) -> {});
         buttonCell.addCooldown(seconds);
         return buttonCell;
     }

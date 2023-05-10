@@ -31,6 +31,11 @@ public class CustomItemStackBuilder {
         return this;
     }
 
+    public CustomItemStackBuilder itemCount(int i) {
+        customItemStack.setAmount(i);
+        return this;
+    }
+
     public CustomItemStackBuilder lore(List<String> lore) {
         meta.setLore(lore);
         return this;

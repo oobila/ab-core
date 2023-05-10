@@ -42,6 +42,13 @@ public class MessageBuilder {
         return this;
     }
 
+    public MessageBuilder variables(String[] variables) {
+        for(String variable : variables) {
+            args.add(VARIABLE + variable + defaultColor);
+        }
+        return this;
+    }
+
     public MessageBuilder trueVariable(String variable) {
         args.add(TRUE_VARIABLE + variable + defaultColor);
         return this;
@@ -176,6 +183,7 @@ public class MessageBuilder {
 
     public String build() {
         StringBuilder sb = new StringBuilder();
+        sb.append(defaultColor);
         if (!args.isEmpty()) {
             sb.append(MessageFormat.format(pattern, args.toArray(new String[args.size()])));
         } else {

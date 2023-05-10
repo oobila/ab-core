@@ -11,13 +11,6 @@ softdepend:
   - ABPresent
   - ABSkyLantern
   - ABEnderPlots
+  - ABPlunderers
 commands:
-  ab-reload:
-    description: Reloads the config for all plugins that use ABCore
-    permission: abcore.reload
-    permission-message: You do not have permission to reload the configs!
-    usage: /<command>
 permissions:
-  abcore.reload:
-    description: Used by admins to reload the config of plugins.
-    default: op

@@ -8,6 +8,6 @@ public interface GuiCell {
 
     ItemStack getIcon();
 
-    void onClick(InventoryClickEvent e, Player player, Cell cell, GuiBase guiMenu);
+    void onClick(InventoryClickEvent e, Player player, Cell cell, Gui gui);
 
 }

@@ -1,7 +1,7 @@
-package com.github.oobila.bukkit.gui.objects;
+package com.github.oobila.bukkit.gui.cells;
 
 import com.github.oobila.bukkit.gui.Cell;
-import com.github.oobila.bukkit.gui.GuiBase;
+import com.github.oobila.bukkit.gui.Gui;
 import com.github.oobila.bukkit.util.text.NotificationManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,11 +23,13 @@ public class ButtonCell extends MenuItemCell {
     }
 
     @Override
-    public void onClick(InventoryClickEvent e, Player player, Cell cell, GuiBase guiMenu) {
+    public void onClick(InventoryClickEvent e, Player player, Cell cell, Gui gui) {
         ZonedDateTime now = ZonedDateTime.now();
         if (dateTime == null || cooldownSeconds <= 0 ||
                 (dateTime.plus(cooldownSeconds, ChronoUnit.SECONDS).isBefore(now))) {
-            buttonClickAction.onButtonClick(e, player, (ButtonCell) cell, guiMenu);
+            if (buttonClickAction != null) {
+                buttonClickAction.onButtonClick(e, player, (ButtonCell) cell, gui);
+            }
             dateTime = now;
         } else {
             NotificationManager.sendNotification(player, MessageFormat.format(
@@ -41,6 +43,6 @@ public class ButtonCell extends MenuItemCell {
     }
 
     public interface ButtonClickAction {
-        void onButtonClick(InventoryClickEvent e, Player player, ButtonCell button, GuiBase guiMenu);
+        void onButtonClick(InventoryClickEvent e, Player player, ButtonCell button, Gui gui);
     }
 }

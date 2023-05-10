@@ -1,7 +1,9 @@
-package com.github.oobila.bukkit.gui.objects;
+package com.github.oobila.bukkit.gui.screens;
 
 import com.github.oobila.bukkit.gui.Cell;
-import com.github.oobila.bukkit.gui.GuiBase;
+import com.github.oobila.bukkit.gui.Gui;
+import com.github.oobila.bukkit.gui.cells.BlockedCell;
+import com.github.oobila.bukkit.gui.cells.SelectionButtonCell;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -73,29 +75,31 @@ public class SelectionGuiBuilder<T> {
         return this;
     }
 
-    public SelectionGui<T> build() {
+    public SelectionGui<T> build(Player player) {
         cellList.addAll(collection.stream().map(t -> cellBuilderInstruction.build(t)).toList());
 
-        return new SelectionGui<T>(plugin, title, blockedCell, cellList.toArray(new SelectionButtonCell[cellList.size()])) {
+        SelectionGui<T> selectionGui = new SelectionGui<T>(plugin, player, title, cellList) {
             @Override
-            protected void onGuiLoad(Player player, Inventory inventory, GuiBase guiBase) {
+            protected void onGuiLoad(Player player, Inventory inventory, Gui guiBase) {
                 if (onLoad != null) {
                     onLoad.run();
                 }
             }
 
             @Override
-            protected void onGuiClose(Player player, Inventory inventory, GuiBase guiBase) {
+            protected void onGuiClose(Player player, Inventory inventory, Gui guiBase) {
                 if (onClose != null) {
                     onClose.run();
                 }
             }
 
             @Override
-            protected void onSelection(InventoryClickEvent e, Player player, Cell cell, GuiBase guiMenu, T object) {
-                selectionAction.onSelection(e, player, cell, guiMenu, object);
+            public void onSelection(InventoryClickEvent e, Player player, Cell cell, Gui gui, T object) {
+                selectionAction.onSelection(e, player, cell, gui, object);
             }
         };
+        selectionGui.setBlockedCell(blockedCell);
+        return selectionGui;
     }
 
     public interface CellBuilderInstruction<T> {
@@ -103,6 +107,6 @@ public class SelectionGuiBuilder<T> {
     }
 
     public interface SelectionAction<T> {
-        void onSelection(InventoryClickEvent e, Player player, Cell cell, GuiBase guiMenu, T object);
+        void onSelection(InventoryClickEvent e, Player player, Cell cell, Gui gui, T object);
     }
 }

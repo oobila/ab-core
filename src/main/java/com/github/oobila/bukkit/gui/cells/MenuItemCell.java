@@ -1,4 +1,4 @@
-package com.github.oobila.bukkit.gui.objects;
+package com.github.oobila.bukkit.gui.cells;
 
 import com.github.oobila.bukkit.gui.Cell;
 import com.github.oobila.bukkit.gui.GuiItemStack;
@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-abstract class MenuItemCell extends Cell {
+public abstract class MenuItemCell extends Cell {
 
     private GuiItemStack itemStack;
 
@@ -25,7 +25,7 @@ abstract class MenuItemCell extends Cell {
 
     public void updateItemStack(ItemStack itemStack, Inventory inventory) {
         setItemStack(itemStack);
-        inventory.setItem(getPosition(), itemStack);
+        inventory.setItem(getIndex(), itemStack);
         Bukkit.getScheduler().scheduleSyncDelayedTask(
                 getPlugin(), () ->
                         inventory.getViewers().stream().forEach(humanEntity -> {

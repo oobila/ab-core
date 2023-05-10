@@ -29,6 +29,7 @@ public abstract class NodeEntity<T extends Entity> extends CustomEntity<T> {
         super(entity);
         if(behaviour != null){
             this.behaviour = behaviour;
+            this.behaviour.setNodeEntity(this);
             BehaviourScheduler.registerNodeEntity(this);
         }
     }

@@ -39,7 +39,6 @@ public class CorePlugin extends JavaPlugin {
     @Getter
     private JobScheduler jobScheduler;
 
-    private Economy economy = null;
     private BehaviourScheduler behaviourScheduler = null;
 
     // needed for MockBukkit
@@ -72,9 +71,6 @@ public class CorePlugin extends JavaPlugin {
         new PreShutdownHook(this, GuiManager::closeAll);
 
         //#### plugin ####
-        //economy
-        setupEconomy();
-
         //schedule tasks
         try {
             behaviourScheduler = new BehaviourScheduler();
@@ -88,28 +84,24 @@ public class CorePlugin extends JavaPlugin {
         //#### persistence ####
         DataLoader.save(this);
 
-        behaviourScheduler.resetInstance();
+        BehaviourScheduler.resetInstance();
         super.onDisable();
     }
 
     public Economy getEconomy() {
-        return economy;
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return null;
+        }
+        return rsp.getProvider();
     }
 
     public boolean hasEconomy() {
-        return economy != null;
-    }
-
-    private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
-        economy = rsp.getProvider();
-        return economy != null;
+        return rsp != null;
     }
 
     public void checkRequiredVersion(String requiredCoreVersion) {

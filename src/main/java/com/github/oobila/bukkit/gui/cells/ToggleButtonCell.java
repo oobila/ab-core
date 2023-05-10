@@ -1,7 +1,7 @@
-package com.github.oobila.bukkit.gui.objects;
+package com.github.oobila.bukkit.gui.cells;
 
 import com.github.oobila.bukkit.gui.Cell;
-import com.github.oobila.bukkit.gui.GuiBase;
+import com.github.oobila.bukkit.gui.Gui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,12 +25,12 @@ public class ToggleButtonCell extends MenuItemCell {
     }
 
     @Override
-    public void onClick(InventoryClickEvent e, Player player, Cell cell, GuiBase guiMenu) {
+    public void onClick(InventoryClickEvent e, Player player, Cell cell, Gui gui) {
         if (enabled) {
-            disableClickAction.onButtonClick(e, player, this, guiMenu);
+            disableClickAction.onButtonClick(e, player, this, gui);
             updateItemStack(disabledItemStack, player.getOpenInventory().getTopInventory());
         } else {
-            enableClickAction.onButtonClick(e, player, this, guiMenu);
+            enableClickAction.onButtonClick(e, player, this, gui);
             updateItemStack(enabledItemStack, player.getOpenInventory().getTopInventory());
         }
         enabled = !enabled;
@@ -38,7 +38,7 @@ public class ToggleButtonCell extends MenuItemCell {
     }
 
     public interface ButtonClickAction {
-        void onButtonClick(InventoryClickEvent e, Player player, ToggleButtonCell button, GuiBase guiMenu);
+        void onButtonClick(InventoryClickEvent e, Player player, ToggleButtonCell button, Gui gui);
     }
 
     @Override
