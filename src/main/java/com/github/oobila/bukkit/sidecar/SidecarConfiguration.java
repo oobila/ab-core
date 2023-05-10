@@ -29,14 +29,6 @@ public class SidecarConfiguration {
 
     private static final String DATA = "data";
 
-    @Getter
-    private static final Map<Class<?>, KeySerializer<?>> keySerializers = new HashMap<>();
-    static {
-        keySerializers.put(String.class, new StringSerializer());
-        keySerializers.put(UUID.class, new UUIDSerializer());
-        keySerializers.put(OfflinePlayer.class, new OfflinePlayerSerializer());
-    }
-
     public static <T, S> void save(Plugin plugin, String path, T data, Class<S> keyType) throws IOException {
         save(new File(plugin.getDataFolder(), path), data, keyType);
     }
@@ -50,7 +42,7 @@ public class SidecarConfiguration {
         Map<String, Object> map = new HashMap<>();
         if (Map.class.isAssignableFrom(data.getClass())) {
             ((Map<S, Object>) data).forEach((s, o) ->
-                map.put(((KeySerializer<S>) keySerializers.get(keyType)).serialize(s), o)
+                map.put(((KeySerializer<S>) Serialization.getKeySerializers().get(keyType)).serialize(s), o)
             );
         } else if (List.class.isAssignableFrom(data.getClass())) {
             List<?> list = (List<?>) data;
@@ -96,7 +88,7 @@ public class SidecarConfiguration {
         if (Map.class.isAssignableFrom(objectType)) {
             Map<S, Object> map = new HashMap<>();
             fileConfiguration.getValues(false).forEach((s, o) ->
-                map.put((S) keySerializers.get(keyType).deserialize(s), o)
+                map.put((S) Serialization.getKeySerializers().get(keyType).deserialize(s), o)
             );
             return (T) map;
         } else if (List.class.isAssignableFrom(objectType)) {

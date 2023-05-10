@@ -1,5 +1,7 @@
 package com.github.oobila.bukkit.util.text;
 
+import com.github.oobila.bukkit.util.ChatColorUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -9,6 +11,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class NotificationBuilder {
 
@@ -33,6 +36,11 @@ public class NotificationBuilder {
 
     public NotificationBuilder variable(String variable) {
         messageBuilder.variable(variable);
+        return this;
+    }
+
+    public NotificationBuilder variables(String... variables) {
+        messageBuilder.variables(variables);
         return this;
     }
 
@@ -149,11 +157,17 @@ public class NotificationBuilder {
         return this;
     }
 
-    public void send() {
+    public NotificationBuilder send() {
         playersToNotify.forEach(offlinePlayer -> {
             if (!isOnlineOnly || offlinePlayer.isOnline()) {
                 NotificationManager.sendNotification(offlinePlayer, messageBuilder);
             }
         });
+        return this;
+    }
+
+    public NotificationBuilder log(Level level) {
+        Bukkit.getLogger().log(level, ChatColor.stripColor(messageBuilder.build()));
+        return this;
     }
 }

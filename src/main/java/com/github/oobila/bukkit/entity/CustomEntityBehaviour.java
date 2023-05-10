@@ -1,19 +1,25 @@
 package com.github.oobila.bukkit.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Entity;
 
-@Getter
 public abstract class CustomEntityBehaviour<T extends NodeEntity<? extends Entity>> {
 
-    private T entity;
-    private int t;
+    @Setter(AccessLevel.PACKAGE) @Getter(AccessLevel.PACKAGE)
+    private T nodeEntity;
 
-    protected CustomEntityBehaviour(T entity, int t) {
-        this.entity = entity;
-        this.t = t;
+    @Getter(AccessLevel.PACKAGE)
+    private int tickSpacing;
+
+    protected CustomEntityBehaviour(int tickSpacing) {
+        this.tickSpacing = tickSpacing;
     }
 
-    public abstract void onNextTick();
+    void onNextTick() {
+        onNextTick(nodeEntity);
+    }
 
+    public abstract void onNextTick(T nodeEntity);
 }

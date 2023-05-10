@@ -1,7 +1,7 @@
-package com.github.oobila.bukkit.gui.objects;
+package com.github.oobila.bukkit.gui.cells;
 
 import com.github.oobila.bukkit.gui.Cell;
-import com.github.oobila.bukkit.gui.GuiBase;
+import com.github.oobila.bukkit.gui.Gui;
 import com.github.oobila.bukkit.itemstack.CustomItemStack;
 import com.github.oobila.bukkit.util.ItemStackUtil;
 import org.bukkit.Material;
@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class BlockedCell extends MenuItemCell {
 
-    private static ItemStack defaultItemStack = new BlockedItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
+    private static ItemStack defaultItemStack = new BlockedItemStack(Material.GRAY_STAINED_GLASS_PANE);
 
     public BlockedCell() {
         super(defaultItemStack);
@@ -26,7 +26,7 @@ public class BlockedCell extends MenuItemCell {
     }
 
     @Override
-    public void onClick(InventoryClickEvent e, Player player, Cell cell, GuiBase guiMenu) {
+    public void onClick(InventoryClickEvent e, Player player, Cell cell, Gui gui) {
         e.setCancelled(true);
     }
 

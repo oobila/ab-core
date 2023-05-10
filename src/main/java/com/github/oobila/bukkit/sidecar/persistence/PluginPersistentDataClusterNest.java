@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The PluginPersistentDataCluster works the same as PluginPersistentData but can only be used on the Map type.
+ * The PluginPersistent"DataCluster works the same as PluginPersistentData but can only be used on the Map type.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

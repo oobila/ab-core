@@ -1,6 +1,7 @@
 package com.github.oobila.bukkit.scheduling.jobs;
 
 import com.github.oobila.bukkit.scheduling.Job;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -11,11 +12,19 @@ import java.util.List;
 public class MaterialPlacer extends Job {
 
     private World world;
+
+
     private List<Material> materialList = new ArrayList<>();
+
+    @Getter
     private List<Location> locations = new ArrayList<>();
 
     public MaterialPlacer(World world) {
         this.world = world;
+    }
+
+    public Material get(Location location) {
+        return materialList.get(locations.indexOf(location));
     }
 
     public void addBlock(Material material, Location location){

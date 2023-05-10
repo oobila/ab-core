@@ -11,7 +11,7 @@ class InventoryCloseListener implements Listener {
     @EventHandler
     public void onGuiClose(InventoryCloseEvent e){
         Player player = Bukkit.getPlayer(e.getPlayer().getUniqueId());
-        GuiBase gui = GuiManager.lastOpenedGui.get(player);
+        Gui gui = GuiManager.lastOpenedGui.get(player);
         if(gui != null && gui.getTitle().equals(e.getView().getTitle())){
             GuiManager.openGuis.remove(player);
             gui.onGuiClose(player, e.getInventory(), gui);

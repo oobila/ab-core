@@ -38,7 +38,7 @@ public class BehaviourScheduler {
             //register new entities
             if(shouldRegisterEntities){
                 stagingRegister.forEach(nodeEntity ->
-                    behaviourTickMap.get(nodeEntity.getBehaviour().getT()).put(nodeEntity.getUniqueId(), nodeEntity)
+                    behaviourTickMap.get(nodeEntity.getBehaviour().getTickSpacing()).put(nodeEntity.getUniqueId(), nodeEntity)
                 );
                 stagingRegister.clear();
                 shouldRegisterEntities = false;
@@ -72,12 +72,12 @@ public class BehaviourScheduler {
     static <T extends Entity> void registerNodeEntity(NodeEntity<T> nodeEntity){
         instance.stagingRegister.add(nodeEntity);
         instance.shouldRegisterEntities = true;
-        instance.behaviourTickMap.computeIfAbsent(nodeEntity.getBehaviour().getT(), i -> new HashMap<>());
+        instance.behaviourTickMap.computeIfAbsent(nodeEntity.getBehaviour().getTickSpacing(), i -> new HashMap<>());
     }
 
     public static <T extends Entity> void remove(NodeEntity<T> nodeEntity) {
-        instance.stagingRemove.computeIfAbsent(nodeEntity.getBehaviour().getT(), i -> new HashSet<>());
-        instance.stagingRemove.get(nodeEntity.getBehaviour().getT()).add(nodeEntity.getUniqueId());
+        instance.stagingRemove.computeIfAbsent(nodeEntity.getBehaviour().getTickSpacing(), i -> new HashSet<>());
+        instance.stagingRemove.get(nodeEntity.getBehaviour().getTickSpacing()).add(nodeEntity.getUniqueId());
         instance.shouldRemoveEntities = true;
     }
 }

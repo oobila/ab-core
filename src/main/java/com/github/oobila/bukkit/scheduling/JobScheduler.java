@@ -29,9 +29,6 @@ public class JobScheduler extends Job {
                 running = false;
             } else {
                 job.runJob();
-                if(job instanceof AsyncJob){ // run next job immediately if async job to save time
-                    runNextJob();
-                }
                 run();
             }
         }

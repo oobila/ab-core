@@ -13,6 +13,9 @@ public class Argument<T> {
     @Getter
     private Class<T> type;
 
+    @Getter
+    private boolean mandatory;
+
     @Getter @Setter
     private List<T> fixedSuggestions;
 
@@ -25,8 +28,9 @@ public class Argument<T> {
     @Getter @Setter
     private T max;
 
-    Argument(String name, Class<T> type) {
+    Argument(String name, Class<T> type, boolean mandatory) {
         this.name = name;
         this.type = type;
+        this.mandatory = mandatory;
     }
 }

@@ -3,6 +3,7 @@ package com.github.oobila.bukkit.events;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -24,7 +25,7 @@ public class PreShutdownHook implements Listener {
     }
 
     @EventHandler
-    public void onConsoleStop(ServerCommandEvent e){
+    public void onConsoleStop(ServerCommandEvent e) {
         if(e.getCommand().trim().equalsIgnoreCase(STOP_STRING) ||
                 e.getCommand().trim().equalsIgnoreCase(STOP_STRING2)){
             runnable.run();
@@ -32,9 +33,17 @@ public class PreShutdownHook implements Listener {
     }
 
     @EventHandler
-    public void onCommandStop(PlayerCommandPreprocessEvent e){
+    public void onCommandStop(PlayerCommandPreprocessEvent e) {
         if(e.getMessage().trim().equalsIgnoreCase(STOP_STRING) ||
                 e.getMessage().trim().equalsIgnoreCase(STOP_STRING2)){
+            runnable.run();
+        }
+    }
+
+    @EventHandler
+    public void onPluginDisable(PluginDisableEvent e) {
+        if(e.getPlugin().getDescription().getDepend().contains("ABCore") ||
+                e.getPlugin().getDescription().getSoftDepend().contains("ABCore")) {
             runnable.run();
         }
     }

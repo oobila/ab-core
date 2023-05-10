@@ -9,7 +9,7 @@ public abstract class AsyncJob extends Job {
         hasStarted = true;
         Bukkit.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             run();
-            notifyObservers();
+            informParent();
             isComplete = true;
         });
     }

@@ -10,15 +10,15 @@ public class GuiManager {
 
     private static Map<UUID, Map<String, Object>> playerSelectionData = new HashMap<>();
     static Plugin plugin;
-    static Map<Player, GuiBase> lastOpenedGui = new HashMap<>();
-    static Map<Player, GuiBase> openGuis = new HashMap<>();
+    static Map<Player, Gui> lastOpenedGui = new HashMap<>();
+    static Map<Player, Gui> openGuis = new HashMap<>();
 
     private GuiManager() {
     }
 
     public static void onEnable(Plugin plugin) {
         GuiManager.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(new CellClickListener(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new InventoryInteractionListeners(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new InventoryCloseListener(), plugin);
     }
 
