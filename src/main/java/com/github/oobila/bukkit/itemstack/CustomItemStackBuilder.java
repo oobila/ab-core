@@ -16,13 +16,13 @@ public class CustomItemStackBuilder {
     private CustomItemStack customItemStack;
     private ItemMeta meta;
 
-    public CustomItemStackBuilder(Plugin plugin, Material material) {
-        customItemStack = new CustomItemStack(plugin, material);
+    public CustomItemStackBuilder(Material material) {
+        customItemStack = new CustomItemStack(material);
         meta = customItemStack.getItemMeta();
     }
 
-    public CustomItemStackBuilder(Plugin plugin, ItemStack itemStack) {
-        customItemStack = new CustomItemStack(plugin, itemStack);
+    public CustomItemStackBuilder(ItemStack itemStack) {
+        customItemStack = new CustomItemStack(itemStack);
         meta = customItemStack.getItemMeta();
     }
 

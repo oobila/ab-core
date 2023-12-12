@@ -33,7 +33,7 @@ public class BlockedCell extends MenuItemCell {
     private static class BlockedItemStack extends CustomItemStack {
 
         protected BlockedItemStack(Material material) {
-            super(null, material);
+            super(material);
             setDisplayName(" ");
             ItemStackUtil.makeUnstackable(this);
         }

@@ -49,7 +49,11 @@ public class CellCollection implements CellCollectionInterface {
 
     @Override
     public Cell getCell(int position) {
-        return cells.get(position);
+        if (position < cells.size()) {
+            return cells.get(position);
+        } else {
+            return blockedCell;
+        }
     }
 
     @Override

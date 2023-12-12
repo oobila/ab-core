@@ -1,6 +1,5 @@
 package com.github.oobila.bukkit.sidecar.resource;
 
-import com.github.oobila.bukkit.sidecar.SidecarConfiguration;
 import lombok.NoArgsConstructor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
@@ -16,7 +15,7 @@ public abstract class YAMLResource extends Resource implements ConfigurationSeri
     }
 
     static <T extends YAMLResource> T construct(InputStream inputStream, Class<T> type) throws IOException {
-        return SidecarConfiguration.load(inputStream, type, null);
+        return null;// SidecarConfiguration.load(inputStream, type, null);
     }
 
     @Override

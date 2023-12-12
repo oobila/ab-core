@@ -1,10 +1,8 @@
 package com.github.oobila.bukkit.sidecar.resource;
 
-import com.github.oobila.bukkit.sidecar.SidecarConfiguration;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;

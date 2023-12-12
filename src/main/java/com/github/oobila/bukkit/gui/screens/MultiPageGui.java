@@ -6,6 +6,8 @@ import com.github.oobila.bukkit.gui.CellCollectionInterface;
 import com.github.oobila.bukkit.gui.Gui;
 import com.github.oobila.bukkit.gui.cells.ButtonCell;
 import com.github.oobila.bukkit.itemstack.CustomItemStackBuilder;
+import com.github.oobila.bukkit.util.enums.ColoredMaterialType;
+import com.github.oobila.bukkit.util.enums.BlockColor;
 import com.github.oobila.bukkit.util.MaterialUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -35,13 +37,13 @@ public class MultiPageGui extends Gui implements CellCollectionInterface {
     private Material pageMaterial;
     private int pages;
     private int pageIndex = 0;
-    private MaterialUtil.BlockColor color;
+    private BlockColor color;
 
     public MultiPageGui(Plugin plugin, Player player, String title, CellCollection cellCollection) {
-        this(plugin, player, title, cellCollection, MaterialUtil.BlockColor.WHITE);
+        this(plugin, player, title, cellCollection, BlockColor.WHITE);
     }
 
-    public MultiPageGui(Plugin plugin, Player player, String title, CellCollection cellCollection, MaterialUtil.BlockColor blockColor) {
+    public MultiPageGui(Plugin plugin, Player player, String title, CellCollection cellCollection, BlockColor blockColor) {
         super(plugin, player, title, cellCollection);
 
         if (cellCollection.getSize() > MAX_SIZE) {
@@ -49,11 +51,11 @@ public class MultiPageGui extends Gui implements CellCollectionInterface {
             return;
         }
 
-        this.pages = (int) Math.ceil((cellCollection.getSize()) / 36d);
-        this.pageMaterial = MaterialUtil.getColoredMaterial(blockColor, MaterialUtil.ColoredMaterialType.STAINED_GLASS_PANE);
-        if (blockColor.equals(MaterialUtil.BlockColor.BLACK)) {
+        this.pages = (int) Math.ceil((cellCollection.getSize()) / 45d);
+        this.pageMaterial = MaterialUtil.getColoredMaterial(blockColor, ColoredMaterialType.STAINED_GLASS_PANE);
+        if (blockColor.equals(BlockColor.BLACK)) {
             this.selectedPageMaterial = Material.WHITE_STAINED_GLASS_PANE;
-        } else if (blockColor.equals(MaterialUtil.BlockColor.LIGHT_GRAY)) {
+        } else if (blockColor.equals(BlockColor.LIGHT_GRAY)) {
             this.pageMaterial = Material.WHITE_STAINED_GLASS_PANE;
         }
         setPageButtons();
@@ -62,7 +64,7 @@ public class MultiPageGui extends Gui implements CellCollectionInterface {
     private void setPageButtons() {
         for (int i = 0; i < 9; i++) {
             final int index = i;
-            pageIcons[i] = new ButtonCell(new CustomItemStackBuilder(null, pageMaterial)
+            pageIcons[i] = new ButtonCell(new CustomItemStackBuilder(pageMaterial)
                     .displayName("Page " + (i + 1))
                     .itemCount(i+1)
                     .build(),
@@ -71,7 +73,7 @@ public class MultiPageGui extends Gui implements CellCollectionInterface {
                         mpg.pageIndex = index;
                         mpg.reload();
                     });
-            selectedPageIcons[i] = new ButtonCell(new CustomItemStackBuilder(null, selectedPageMaterial)
+            selectedPageIcons[i] = new ButtonCell(new CustomItemStackBuilder(selectedPageMaterial)
                     .displayName("Page " + (i + 1))
                     .lore(Collections.singletonList("Current page"))
                     .itemCount(i+1)

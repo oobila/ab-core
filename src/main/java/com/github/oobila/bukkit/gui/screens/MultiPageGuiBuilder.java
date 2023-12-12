@@ -4,7 +4,7 @@ import com.github.oobila.bukkit.gui.Cell;
 import com.github.oobila.bukkit.gui.CellCollection;
 import com.github.oobila.bukkit.gui.Gui;
 import com.github.oobila.bukkit.gui.cells.BlockedCell;
-import com.github.oobila.bukkit.util.MaterialUtil;
+import com.github.oobila.bukkit.util.enums.BlockColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
@@ -24,7 +24,7 @@ public class MultiPageGuiBuilder implements GuiBuilder<MultiPageGuiBuilder, Mult
     private BlockedCell blockedCell = new BlockedCell();
     private GuiStateChange onLoad;
     private GuiStateChange onClose;
-    private MaterialUtil.BlockColor blockColor;
+    private BlockColor blockColor;
 
     public MultiPageGuiBuilder(Plugin plugin) {
         this.plugin = plugin;
@@ -82,7 +82,7 @@ public class MultiPageGuiBuilder implements GuiBuilder<MultiPageGuiBuilder, Mult
         return this;
     }
 
-    public MultiPageGuiBuilder color(MaterialUtil.BlockColor color) {
+    public MultiPageGuiBuilder color(BlockColor color) {
         this.blockColor = color;
         return this;
     }
@@ -92,7 +92,7 @@ public class MultiPageGuiBuilder implements GuiBuilder<MultiPageGuiBuilder, Mult
         CellCollection cellCollection = new CellCollection(plugin, player, cellList);
         cellCollection.setBlockedCell(blockedCell);
         return new MultiPageGui(plugin, player, title, cellCollection,
-                blockColor == null ? MaterialUtil.BlockColor.WHITE : blockColor) {
+                blockColor == null ? BlockColor.WHITE : blockColor) {
             @Override
             protected void onGuiLoad(Player player, Inventory inventory, Gui guiBase) {
                 if (onLoad != null) {

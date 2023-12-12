@@ -14,21 +14,19 @@ import java.util.List;
 
 public class SelectionButtonCellBuilder<T> {
 
-    private Plugin plugin;
     private T returnObject;
     private ItemStack itemStack;
     private String name;
     private List<String> lore = new ArrayList<>();
     private boolean disableSelection;
 
-    public SelectionButtonCellBuilder(Plugin plugin, T returnObject, ItemStack itemStack) {
-        this.plugin = plugin;
+    public SelectionButtonCellBuilder(T returnObject, ItemStack itemStack) {
         this.returnObject = returnObject;
         this.itemStack = itemStack;
     }
 
-    public SelectionButtonCellBuilder(Plugin plugin, T returnObject, Material material) {
-        this(plugin, returnObject, new ItemStack(material));
+    public SelectionButtonCellBuilder(T returnObject, Material material) {
+        this(returnObject, new ItemStack(material));
     }
 
     public SelectionButtonCellBuilder<T> name(String name) {
@@ -52,7 +50,7 @@ public class SelectionButtonCellBuilder<T> {
     }
 
     public SelectionButtonCell<T> build() {
-        CustomItemStack customItemStack = new CustomItemStackBuilder(plugin, itemStack)
+        CustomItemStack customItemStack = new CustomItemStackBuilder(itemStack)
                 .lore(lore)
                 .build();
         if (name != null) {

@@ -1,26 +1,22 @@
 package com.github.oobila.bukkit;
 
 import com.github.oobila.bukkit.entity.BehaviourScheduler;
-import com.github.oobila.bukkit.events.PreShutdownHook;
+import com.github.oobila.bukkit.gui.GuiListener;
 import com.github.oobila.bukkit.gui.GuiManager;
+import com.github.oobila.bukkit.itemstack.CustomItemStackListener;
+import com.github.oobila.bukkit.persistence.caches.ConfigCache;
 import com.github.oobila.bukkit.scheduling.JobScheduler;
-import com.github.oobila.bukkit.sidecar.config.ConfigLoader;
-import com.github.oobila.bukkit.sidecar.config.PluginConfig;
-import com.github.oobila.bukkit.sidecar.persistence.DataLoader;
 import com.github.oobila.bukkit.util.Version;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.milkbowl.vault.economy.Economy;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
 
-import java.io.File;
-import java.util.Map;
 import java.util.logging.Level;
 
 
@@ -28,28 +24,27 @@ public class CorePlugin extends JavaPlugin {
 
     //CORE PLUGIN ICON (blue):  eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzRmZWM1Y2RjMmUyMjQwMWE0YjViYTM3NmZmZTY0NzI3OWVkM2Y5NGZkNzVmODA1NmQ5ODZmMzNjOTMxYWM1NSJ9fX0=
     private static final int SPIGOT_ID = 97898;
-
-    @PluginConfig(path = "language.yml")
-    @Getter
-    private static Map<String, String> language;
+    private static final int METRICS_ID = 0;
 
     @Getter @Setter(AccessLevel.PRIVATE)
     private static CorePlugin instance;
 
+    private static final ConfigCache<String, Object> config = new ConfigCache<>(
+            "config.yml",
+            String.class,
+            Object.class
+    );
+    private static final ConfigCache<String, String> language = new ConfigCache<>(
+            "language.yml",
+            String.class,
+            String.class
+    );
+
     @Getter
     private JobScheduler jobScheduler;
 
-    private BehaviourScheduler behaviourScheduler = null;
-
-    // needed for MockBukkit
-    public CorePlugin() {
-        super();
-    }
-
-    // needed for MockBukkit
-    protected CorePlugin(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-        super(loader, description, dataFolder, file);
-    }
+    @Getter
+    private BehaviourScheduler behaviourScheduler;
 
     @Override
     public void onEnable() {
@@ -57,14 +52,19 @@ public class CorePlugin extends JavaPlugin {
         setInstance(this);
         new UpdateChecker(this, SPIGOT_ID);
 
-        //#### config ####
-        ConfigLoader.load(this);
+        //#### new persistence ####
+        config.open(this);
+        language.open(this);
 
-        //#### persistence ####
-        DataLoader.load(this);
+        //#### metrics ####
+        Metrics metrics = new Metrics(this, METRICS_ID);
 
-        //#### scheduling ####
+        //#### services ####
         jobScheduler = new JobScheduler(this, 1);
+
+        //#### register ####
+        Bukkit.getServer().getPluginManager().registerEvents(new GuiListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new CustomItemStackListener(), this);
 
         //#### gui ####
         GuiManager.onEnable(this);
@@ -81,9 +81,6 @@ public class CorePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        //#### persistence ####
-        DataLoader.save(this);
-
         BehaviourScheduler.resetInstance();
         super.onDisable();
     }

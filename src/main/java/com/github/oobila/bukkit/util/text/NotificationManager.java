@@ -30,8 +30,11 @@ public class NotificationManager {
 
     public static void resolveNotifications(Player player) {
         if (player.isOnline()) {
-            storedNotifications.get(player.getUniqueId()).forEach(player::sendMessage);
-            storedNotifications.remove(player.getUniqueId());
+            List<String> notifications = storedNotifications.get(player.getUniqueId());
+            if (notifications != null) {
+                notifications.forEach(player::sendMessage);
+                storedNotifications.remove(player.getUniqueId());
+            }
         }
     }
 }

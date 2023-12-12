@@ -5,6 +5,7 @@ import com.github.oobila.bukkit.util.text.NotificationBuilder;
 import lombok.Getter;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -80,7 +81,7 @@ public abstract class ABCommand implements ABCommandInterface, CommandExecutor, 
                 type.equals(float.class) || type.equals(Float.class) ||
                 type.equals(long.class) || type.equals(Long.class) ||
                 type.equals(double.class) || type.equals(Double.class)) {
-            if (!StringUtils.isNumeric(input)) {
+            if (!NumberUtils.isNumber(input)) {
                 new NotificationBuilder(player, ARG_IS_NON_NUMERIC)
                         .variable(input).send();
                 return false;
@@ -88,7 +89,7 @@ public abstract class ABCommand implements ABCommandInterface, CommandExecutor, 
                 return true;
             }
         } else if(type.equals(boolean.class) || type.equals(Boolean.class)) {
-            if (BooleanUtils.toBooleanObject(input) != null) {
+            if (BooleanUtils.toBooleanObject(input) == null) {
                 new NotificationBuilder(player, ARG_IS_NON_BOOLEAN)
                         .variable(input).send();
                 return false;

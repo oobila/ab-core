@@ -66,11 +66,16 @@ class InventoryInteractionListeners implements Listener {
     }
 
     private void updateItemCells(Gui gui, Inventory inventory) {
+        gui.awaitingUpdate = true;
         Bukkit.getScheduler().scheduleSyncDelayedTask(CorePlugin.getInstance(), () -> {
-            for (int i = 0; i < gui.getInventorySize(); i++) {
-                if (gui.getInventoryCell(i) instanceof ItemCell itemCell) {
-                    itemCell.setItemStack(inventory.getItem(i));
+            try {
+                for (int i = 0; i < gui.getInventorySize(); i++) {
+                    if (gui.getInventoryCell(i) instanceof ItemCell itemCell) {
+                        itemCell.setItemStack(inventory.getItem(i));
+                    }
                 }
+            } finally {
+                gui.awaitingUpdate = false;
             }
         });
     }

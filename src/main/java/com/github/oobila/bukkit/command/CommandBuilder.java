@@ -1,5 +1,6 @@
 package com.github.oobila.bukkit.command;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
@@ -44,6 +45,8 @@ public class CommandBuilder {
         Argument<T> argument = new Argument<>(argumentName, type, mandatory);
         if (type.isEnum()) {
             argument.setFixedSuggestions(Arrays.stream(type.getEnumConstants()).toList());
+        } else if (type.equals(boolean.class) || type.equals(Boolean.class)) {
+            argument.setFixedSuggestions((List<T>) List.of(true, false));
         }
         compareArgs(argument);
         arguments.add(argument);
@@ -134,11 +137,17 @@ public class CommandBuilder {
                 if (!arguments.isEmpty() && arguments.size() >= args.length) {
                     Argument<?> argument = arguments.get(args.length - 1);
                     if (argument.getFixedSuggestions() != null && !argument.getFixedSuggestions().isEmpty()) {
-                        suggestions = argument.getFixedSuggestions()
-                                .stream().map(Object::toString).toList();
+                        suggestions = argument.getFixedSuggestions().stream()
+                                .map(Object::toString)
+                                .filter(s ->
+                                        args[args.length - 1].length() > 0 ?
+                                                StringUtils.containsIgnoreCase(s, args[args.length - 1]) :
+                                                true
+                                ).toList();
                     } else if (argument.getSuggestionCallable() != null) {
-                        suggestions = argument.getSuggestionCallable().getSuggestions(player)
-                                .stream().map(Object::toString).toList();
+                        suggestions = argument.getSuggestionCallable()
+                                .getSuggestions(player, args[args.length - 1]).stream()
+                                .map(Object::toString).toList();
                     }
                 }
                 if (args.length <= 1 && suggestions == null && !subCommands.isEmpty()) {
