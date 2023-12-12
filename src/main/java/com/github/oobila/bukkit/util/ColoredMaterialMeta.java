@@ -1,12 +1,15 @@
 package com.github.oobila.bukkit.util;
 
+import com.github.oobila.bukkit.util.enums.BlockColor;
+import com.github.oobila.bukkit.util.enums.ColoredMaterialType;
+
 import java.util.Objects;
 
 class ColoredMaterialMeta {
-    MaterialUtil.BlockColor blockColor;
-    MaterialUtil.ColoredMaterialType type;
+    BlockColor blockColor;
+    ColoredMaterialType type;
 
-    public ColoredMaterialMeta(MaterialUtil.BlockColor blockColor, MaterialUtil.ColoredMaterialType type) {
+    public ColoredMaterialMeta(BlockColor blockColor, ColoredMaterialType type) {
         this.blockColor = blockColor;
         this.type = type;
     }

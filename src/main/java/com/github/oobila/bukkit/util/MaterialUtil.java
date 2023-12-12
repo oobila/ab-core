@@ -1,5 +1,7 @@
 package com.github.oobila.bukkit.util;
 
+import com.github.oobila.bukkit.util.enums.BlockColor;
+import com.github.oobila.bukkit.util.enums.ColoredMaterialType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,9 +64,9 @@ public class MaterialUtil {
      */
     @SuppressWarnings("java:S5413")
     public static Material[] randomColoredBlockArray(ColoredMaterialType type, int size){
-        return (Material[]) Stream.generate(() -> {
-            return randomColoredBlock(type);
-        }).limit(size).toArray();
+        return (Material[]) Stream.generate(() -> randomColoredBlock(type))
+                .limit(size)
+                .toArray();
     }
 
     public static Material getColoredMaterial(BlockColor blockColor, ColoredMaterialType type){
@@ -76,84 +77,19 @@ public class MaterialUtil {
         return coloredMaterials.get(new ColoredMaterialMeta(BlockColor.get(chatColor), type));
     }
 
-    public enum ColoredMaterialType {
-        WOOL,
-        CARPET,
-        TERRACOTTA,
-        CONCRETE,
-        CONCRETE_POWDER,
-        GLAZED_TERRACOTTA,
-        STAINED_GLASS,
-        STAINED_GLASS_PANE,
-        SHULKER_BOX,
-        BED,
-        CANDLE,
-        BANNER
-    }
-
-    public enum BlockColor {
-        WHITE(ChatColor.WHITE),
-        LIGHT_GRAY(ChatColor.GRAY),
-        GRAY(ChatColor.DARK_GRAY),
-        BLACK(ChatColor.BLACK),
-        BROWN(null),
-        RED(ChatColor.RED),
-        ORANGE(ChatColor.GOLD),
-        YELLOW(ChatColor.YELLOW),
-        LIME(ChatColor.GREEN),
-        GREEN(ChatColor.DARK_GREEN),
-        CYAN(ChatColor.DARK_AQUA),
-        LIGHT_BLUE(ChatColor.AQUA),
-        BLUE(ChatColor.BLUE),
-        PURPLE(ChatColor.DARK_PURPLE),
-        MAGENTA(null),
-        PINK(ChatColor.LIGHT_PURPLE);
-
-        private static final Map<ChatColor, BlockColor> chatColorBlockColorMap;
-        static {
-            chatColorBlockColorMap = Arrays.stream(BlockColor.values())
-                    .filter(blockColor -> blockColor.chatColor != null)
-                    .collect(Collectors.toMap(
-                            (blockColor) -> blockColor.getChatColor(),
-                            (blockColor) -> blockColor
-                    )
-            );
-        }
-
-        @Getter
-        private ChatColor chatColor;
-
-        BlockColor(ChatColor chatColor) {
-            this.chatColor = chatColor;
-        }
-
-        public static BlockColor get(ChatColor chatColor) {
-            return chatColorBlockColorMap.get(chatColor);
-        }
-    }
-
     // #### SIGNS ####
-
-    private static final List<Material> SIGN_MATERIALS = Arrays.asList(
-            Material.ACACIA_SIGN,
-            Material.ACACIA_WALL_SIGN,
-            Material.BIRCH_SIGN,
-            Material.BIRCH_WALL_SIGN,
-            Material.CRIMSON_SIGN,
-            Material.CRIMSON_WALL_SIGN,
-            Material.DARK_OAK_SIGN,
-            Material.DARK_OAK_WALL_SIGN,
-            Material.JUNGLE_SIGN,
-            Material.JUNGLE_WALL_SIGN,
-            Material.OAK_SIGN,
-            Material.OAK_WALL_SIGN,
-            Material.SPRUCE_SIGN,
-            Material.SPRUCE_WALL_SIGN,
-            Material.WARPED_SIGN,
-            Material.WARPED_WALL_SIGN
-    );
+    public static final List<Material> SIGN_MATERIALS = Arrays.stream(Material.values())
+            .filter(material -> material.name().toLowerCase().endsWith("sign"))
+            .toList();
 
     public static boolean isSign(Material type) {
         return SIGN_MATERIALS.contains(type);
     }
+
+    // #### TRANSPARENT ####
+    public static final List<Material> TRANSPARENT_MATERIALS = Arrays.stream(Material.values())
+            .filter(material -> !material.isSolid())
+            .toList();
+    public static final Set<Material> TRANSPARENT_MATERIAL_SET = TRANSPARENT_MATERIALS.stream().collect(Collectors.toSet());
+
 }

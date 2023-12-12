@@ -27,6 +27,8 @@ public abstract class Gui implements GuiInterface, CellCollectionInterface {
 
     protected InventoryType inventoryType = InventoryType.PLAYER;
 
+    boolean awaitingUpdate = false;
+
     protected Gui(Plugin plugin, Player player, String title, CellCollection cellCollection) {
         this.plugin = plugin;
         this.player = player;

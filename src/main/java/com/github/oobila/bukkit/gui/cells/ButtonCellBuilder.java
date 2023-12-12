@@ -17,20 +17,21 @@ public class ButtonCellBuilder {
     private static final String EMPTY = "{0}";
     private static final String INSTRUCTION_PREFIX = "-> ";
 
-    private Plugin plugin;
     private ItemStack itemStack;
     private String name;
     private List<String> lore = new ArrayList<>();
     private ButtonCell.ButtonClickAction buttonClickAction;
     private long seconds;
 
-    public ButtonCellBuilder(Plugin plugin, ItemStack itemStack) {
-        this.plugin = plugin;
+    public ButtonCellBuilder(ItemStack itemStack) {
+        if (itemStack.getItemMeta().getLore() != null && !itemStack.getItemMeta().getLore().isEmpty()) {
+            this.lore = itemStack.getItemMeta().getLore();
+        }
         this.itemStack = itemStack;
     }
 
-    public ButtonCellBuilder(Plugin plugin, Material material) {
-        this(plugin, new ItemStack(material));
+    public ButtonCellBuilder(Material material) {
+        this(new ItemStack(material));
     }
 
     public ButtonCellBuilder name(String name) {
@@ -64,7 +65,7 @@ public class ButtonCellBuilder {
     }
 
     public ButtonCell build() {
-        CustomItemStack customItemStack = new CustomItemStackBuilder(plugin, itemStack)
+        CustomItemStack customItemStack = new CustomItemStackBuilder(itemStack)
                 .lore(lore)
                 .build();
         if (name != null) {

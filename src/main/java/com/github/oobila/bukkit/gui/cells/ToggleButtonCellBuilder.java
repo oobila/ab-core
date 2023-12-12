@@ -17,7 +17,6 @@ public class ToggleButtonCellBuilder {
     private static final String EMPTY = "{0}";
     private static final String INSTRUCTION_PREFIX = "-> ";
 
-    private Plugin plugin;
     private ItemStack enabledItemStack;
     private ItemStack disabledItemStack;
     private boolean enabled;
@@ -28,14 +27,13 @@ public class ToggleButtonCellBuilder {
     private ToggleButtonCell.ButtonClickAction enableButtonClickAction;
     private ToggleButtonCell.ButtonClickAction disableButtonClickAction;
 
-    public ToggleButtonCellBuilder(Plugin plugin, ItemStack enabledItemStack, ItemStack disabledItemStack) {
-        this.plugin = plugin;
+    public ToggleButtonCellBuilder(ItemStack enabledItemStack, ItemStack disabledItemStack) {
         this.enabledItemStack = enabledItemStack;
         this.disabledItemStack = disabledItemStack;
     }
 
-    public ToggleButtonCellBuilder(Plugin plugin, Material enabledMaterial, Material disabledMaterial) {
-        this(plugin, new ItemStack(enabledMaterial), new ItemStack(disabledMaterial));
+    public ToggleButtonCellBuilder(Material enabledMaterial, Material disabledMaterial) {
+        this(new ItemStack(enabledMaterial), new ItemStack(disabledMaterial));
     }
 
     public ToggleButtonCellBuilder enabled(boolean enabled) {
@@ -94,7 +92,7 @@ public class ToggleButtonCellBuilder {
     }
 
     public ToggleButtonCell build() {
-        CustomItemStack builtEnabledItemStack = new CustomItemStackBuilder(plugin, this.enabledItemStack)
+        CustomItemStack builtEnabledItemStack = new CustomItemStackBuilder(this.enabledItemStack)
                 .lore(enabledLore)
                 .build();
         if (enabledName != null) {
@@ -103,7 +101,7 @@ public class ToggleButtonCellBuilder {
             builtEnabledItemStack.setItemMeta(itemMeta);
         }
 
-        CustomItemStack builtDisabledItemStack = new CustomItemStackBuilder(plugin, this.disabledItemStack)
+        CustomItemStack builtDisabledItemStack = new CustomItemStackBuilder(this.disabledItemStack)
                 .lore(disabledLore)
                 .build();
         if (disabledName != null) {

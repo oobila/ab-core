@@ -20,6 +20,7 @@ public class MessageBuilder {
     private static final ChatColor TRUE_VARIABLE = ChatColor.GREEN;
     private static final ChatColor FALSE_VARIABLE = ChatColor.RED;
     private static final ChatColor MONEY = ChatColor.GREEN;
+    private static final ChatColor NEGATIVE_MONEY = ChatColor.RED;
     private static final ChatColor INSTRUCTION = ChatColor.LIGHT_PURPLE;
 
     private static final String EMPTY_STRING = "";
@@ -85,12 +86,12 @@ public class MessageBuilder {
     }
 
     public MessageBuilder money(double money) {
-        args.add(MONEY + String.valueOf(money) + defaultColor);
+        args.add((money < 0 ? NEGATIVE_MONEY : MONEY) + String.valueOf(money) + defaultColor);
         return this;
     }
 
     public MessageBuilder money(int money) {
-        args.add(MONEY + String.valueOf(money) + defaultColor);
+        args.add((money < 0 ? NEGATIVE_MONEY : MONEY) + String.valueOf(money) + defaultColor);
         return this;
     }
 

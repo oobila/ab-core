@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface SuggestionCallable<T> {
 
-    List<T> getSuggestions(Player player);
+    List<T> getSuggestions(Player player, String arg);
 
 }

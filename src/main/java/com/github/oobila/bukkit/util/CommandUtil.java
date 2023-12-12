@@ -1,6 +1,5 @@
 package com.github.oobila.bukkit.util;
 
-import com.github.oobila.bukkit.CorePlugin;
 import com.github.oobila.bukkit.util.text.MessageBuilder;
 import com.github.oobila.bukkit.util.text.Notification;
 import lombok.AccessLevel;
@@ -44,7 +43,7 @@ public class CommandUtil {
     private static boolean checkArgsSize(Player player, String[] strings, String[] args, int mandatory) {
         if(strings.length > args.length || strings.length < mandatory){
             Notification.sendNotification(player,
-                    new MessageBuilder(CorePlugin.getLanguage().get(INCORRECT_COMMAND_ARGS))
+                    new MessageBuilder("Command requires {0} arguments")
                             .variable(mandatory));
             return false;
         }
@@ -68,7 +67,7 @@ public class CommandUtil {
                 !StringUtils.isNumeric(strings[index])){
 
             Notification.sendNotification(player,
-                    new MessageBuilder(CorePlugin.getLanguage().get(COMMAND_TYPE))
+                    new MessageBuilder("Incorrect arg type used: {0}. Arg must be of type: {1}")
                             .variable(strings[index])
                             .variable(argTypes[index].getSimpleName()));
             return false;
@@ -89,7 +88,7 @@ public class CommandUtil {
             String options = printArgUsage(args[index], argTypes[index]);
 
             Notification.sendNotification(player,
-                    new MessageBuilder(CorePlugin.getLanguage().get(COMMAND_OPTIONS))
+                    new MessageBuilder("Incorrect arg used: {0}. Must use one of: {1}")
                             .variable(strings[index])
                             .variable(options));
             return false;

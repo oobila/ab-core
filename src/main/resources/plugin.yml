@@ -1,6 +1,6 @@
 main: com.github.oobila.bukkit.CorePlugin
 name: ABCore
-version: '1.9-SNAPSHOT'
+version: '1.10.1'
 description: This is a library plugin.
 author: oobila
 website: 'https://github.com/oobila/ab-core'
@@ -12,5 +12,13 @@ softdepend:
   - ABSkyLantern
   - ABEnderPlots
   - ABPlunderers
+  - ABGubbins
+load: STARTUP
+loadbefore:
+  - ABPresent
+  - ABSkyLantern
+  - ABEnderPlots
+  - ABPlunderers
+  - ABGubbins
 commands:
 permissions:
